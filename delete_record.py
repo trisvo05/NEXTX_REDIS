@@ -25,7 +25,7 @@ cursor = db.cursor(dictionary=True)
 from datetime import datetime, timedelta
 
 def delete():
-    cutoff_time = datetime.now() - timedelta(hours=2)
+    cutoff_time = datetime.now() - timedelta(minutes=1)
 
     cursor.execute(
         """
@@ -35,9 +35,9 @@ def delete():
         (cutoff_time,)
     )
 
-    print(f"🗑️ Đã xóa {cursor.rowcount} bản ghi cũ hơn 2 giờ")
-    time.sleep(2*60*60+5*60) 
-    # sau 2h5p 
+    print(f"🗑️ Đã xóa {cursor.rowcount} bản ghi cũ hơn 1 phút")
+    time.sleep(60) 
+    # sau 1p xóa bản ghi 
 
 if __name__ == "__main__":
     while True:
