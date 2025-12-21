@@ -155,15 +155,30 @@ def dong_bo_tu_lan_sau():
             # TRIGGER INSERT/UPDATE
             else:
                 for field in ["from_number", "to_number"]:
-                    phone = new_json.get(field)
-                    if not phone:
-                        continue
+                    # Xóa ngram cũ nếu có (UPDATE)
+                    old_phone = old_json.get(field)
+                    if old_phone:
+                        old_ngrams = generate_ngrams_range(old_phone)
+                        for gram in old_ngrams:
+                            r.srem(f"ngram:phone:{gram}", call_history_id)
 
-                    ngrams = generate_ngrams_range(phone)
-                    for gram in ngrams:
-                        r.sadd(f"ngram:phone:{gram}", call_history_id)
+                    # Thêm ngram mới
+                    new_phone = new_json.get(field)
+                    if new_phone:
+                        new_ngrams = generate_ngrams_range(new_phone)
+                        for gram in new_ngrams:
+                            r.sadd(f"ngram:phone:{gram}", call_history_id)
 
-            print(f"✅ Synced call_history_id={call_history_id} | action={action_type}")
+                            for field in ["from_number", "to_number"]:
+                                phone = new_json.get(field)
+                                if not phone:
+                                    continue
+
+                                ngrams = generate_ngrams_range(phone)
+                                for gram in ngrams:
+                                    r.sadd(f"ngram:phone:{gram}", call_history_id)
+
+                        print(f"✅ Synced call_history_id={call_history_id} | action={action_type}")
 
         # 2. Update last_sync
         if rows:
