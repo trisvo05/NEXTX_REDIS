@@ -60,21 +60,21 @@ def generate_ngrams_fixed(phone):
 # =====================================================
 # STEP 1 – TẠO TRƯỚC 100.000 NGRAM (EXIST KEY)
 # =====================================================
-def tao_full_ngram_keys():
-    print("🚀 STEP 1: TẠO FULL NGRAM EXIST KEY")
+# def tao_full_ngram_keys():
+#     print("🚀 STEP 1: TẠO FULL NGRAM EXIST KEY")
 
-    pipe = r.pipeline(transaction=False)
+#     pipe = r.pipeline(transaction=False)
 
-    for i in range(10 ** NGRAM_SIZE):
-        gram = str(i).zfill(NGRAM_SIZE)
-        pipe.set(f"ngram:phone:exist:{gram}", 1)
+#     for i in range(10 ** NGRAM_SIZE):
+#         gram = str(i).zfill(NGRAM_SIZE)
+#         pipe.set(f"ngram:phone:exist:{gram}", 1)
 
-        if i % 10000 == 0:
-            pipe.execute()
-            print(f"✅ Created {i} exist keys")
+#         if i % 10000 == 0:
+#             pipe.execute()
+#             print(f"✅ Created {i} exist keys")
 
-    pipe.execute()
-    print("🎉 HOÀN TẤT STEP 1\n")
+#     pipe.execute()
+#     print("🎉 HOÀN TẤT STEP 1\n")
 
 # =====================================================
 # STEP 2 – ĐỒNG BỘ LẦN ĐẦU (SQL → REDIS)
@@ -182,7 +182,7 @@ if __name__ == "__main__":
     print("========== REDIS PHONE NGRAM SYNC ==========")
 
     # ⚠️ CHỈ CHẠY 1 LẦN DUY NHẤT
-    tao_full_ngram_keys()
+    # tao_full_ngram_keys()
 
     dong_bo_lan_1()
     dong_bo_tu_lan_sau()
